@@ -28,7 +28,6 @@ public:
     input->data = item;
     input->next = this->top;
     this->top = input;
-    cout<<this->top->data<<" has been added to the stack"<<endl;
   }
 
   int pop(){
@@ -43,6 +42,45 @@ public:
       ++i;
     }
   }
+};
+
+
+//implement a class that uses a set of stacks, when a stack reaches max capacity you start a new one 
+class setOfStacks{
+public:
+  node* top = nullptr; // I think I can remove
+  vector<stack> stacks; //vector containing stack objects
+  int stackLimit = 10;  //limit to the size each stack can be
+  int stacked = 0;
+
+  void  push(int item){
+    node* input = new node(item);
+    if (stacked == 10 or stacked == 0){
+      stack newStack;
+      stacks.push_back(newStack);
+      stacked = 0;
+    }
+    stacks.back().push(item);
+  }
+
+  int pop(){
+    int dataOut = stacks.back().pop();
+    stacked--;
+    if (stacked ==0 and stacks.size()!=0){
+      stacks.pop_back();
+      stacked = 10;
+    }
+    return dataOut;
+  }
+
+  void printStack(){
+    while (stacks.size() != 0){
+      stacks.back().printStack();
+      stacks.pop_back();
+      stacked = 10;
+    }
+    stacked =0;
+    }
 };
 
 //turns an array into a stack of nodes, given the array and # of elements in the array
@@ -66,16 +104,22 @@ int main (){
   for (int i =0; i<sizeof(a)/sizeof(int); i++){
     myStack.push(a[i]);
   }
-  //myStack.printStack();
-  cout<<myStack.pop()<<endl;
-  cout<<myStack.pop()<<endl;
-  cout<<myStack.pop()<<endl;
-  myStack.printStack();
-
   stack myStack2 = arrayStack(a,6);
   myStack2.printStack();
 
-  stack* threeStack[3];
-  
+
+  //setOfStacks testing
+  cout<<endl<<endl<<endl<<"playing with stack sets now "<<endl;
+  setOfStacks stackSet;
+  int elements = 30;
+  int b[elements] = {0};
+  for (int j =0; j<elements; j++){
+    b[j] = j;
+  }
+  for (int i =0; i<sizeof(b)/sizeof(int); i++){
+    stackSet.push(b[i]);
+  }
+  //stackSet.printStack();
+
 
 }
