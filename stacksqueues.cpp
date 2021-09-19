@@ -11,12 +11,13 @@ class node{
 public:
   int data;
   node* next = nullptr;
+  int min;
 
   node(int info){
     this->data = info;
+    int min = info;
   }
 };
-
 
 class stack {
 public:
@@ -26,7 +27,11 @@ public:
   void  push(int item){
     node* input = new node(item);
     input->data = item;
+    input->min = item;
     input->next = this->top;
+    if (top != nullptr && input->min > top->min){ //change min value to reflect that of the stack below  it
+      input->min = top->min;
+    }
     this->top = input;
   }
 
@@ -42,10 +47,13 @@ public:
       ++i;
     }
   }
+
+  int getMin(){
+    return this->top->min;
+  }
 };
 
-
-//implement a class that uses a set of stacks, when a stack reaches max capacity you start a new one 
+//implement a class that uses a set of stacks, when a stack reaches max capacity you start a new one
 class setOfStacks{
 public:
   node* top = nullptr; // I think I can remove
@@ -95,17 +103,15 @@ stack arrayStack (int* p, int length){
   return myStack;
 }
 
-
-
-
 int main (){
   stack myStack;
-  int a[] = {1,2,3,4,5,6};
+  int a[] = {3,5,6,3,8,6,7};
   for (int i =0; i<sizeof(a)/sizeof(int); i++){
     myStack.push(a[i]);
   }
   stack myStack2 = arrayStack(a,6);
-  myStack2.printStack();
+  cout<<"the minimum value is "<<myStack2.getMin()<<endl;
+  myStack.printStack();
 
 
   //setOfStacks testing
