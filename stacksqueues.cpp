@@ -24,10 +24,13 @@ public:
 
 
   void  push(int item){
-    node input = node(item);
-    input.next = this->top;
-    this->top = &input;
+    node* input = new node(item);
+    input->data = item;
+    input->next = this->top;
+    this->top = input;
+    cout<<this->top->data<<" has been added to the stack"<<endl;
   }
+
   int pop(){
     node* popOff = this->top;
     this->top = this->top->next;
@@ -35,12 +38,26 @@ public:
   }
   void printStack(){
     int i = 0;
-    while (this->top !=nullptr){
+    while (this!= nullptr && this->top !=nullptr){
       cout<<"This is item # "<<i<<" on the stack: "<< this->pop() <<endl;
       ++i;
     }
   }
 };
+
+//turns an array into a stack of nodes, given the array and # of elements in the array
+stack arrayStack (int* p, int length){
+  int i = 0;
+  stack myStack;
+  while (i<length){
+    myStack.push(*p);
+    p++;
+    ++i;
+  }
+  return myStack;
+}
+
+
 
 
 int main (){
@@ -52,6 +69,13 @@ int main (){
   //myStack.printStack();
   cout<<myStack.pop()<<endl;
   cout<<myStack.pop()<<endl;
+  cout<<myStack.pop()<<endl;
+  myStack.printStack();
 
+  stack myStack2 = arrayStack(a,6);
+  myStack2.printStack();
+
+  stack* threeStack[3];
+  
 
 }
