@@ -99,6 +99,12 @@ public:
   }
 };
 
+
+//given a tower (disks stacked in ascending size from top->bottom) and empty stacks move the tower to another stack
+//disks can only be stacked on disks larger thna themselves, can only move one disk at a time
+//stack hanoiTower(stack tower){
+//}
+
 //turns an array into a stack of nodes, given the array and # of elements in the array
 stack arrayStack (int* p, int length){
   int i = 0;
@@ -110,6 +116,36 @@ stack arrayStack (int* p, int length){
   }
   return myStack;
 }
+
+//use two stacks to implement a queue
+class myQueue{
+public:
+  stack front;
+  stack back;
+  //queue follows first in first out
+  void append(int info){
+    if (front.top == nullptr){
+      front.push(info);
+    }else{
+      back.push(info);
+    }
+  }
+
+  int pop(){
+    if (front.top == nullptr){
+      cerr<<"You tried to pop an empty queue"<<endl;
+    }
+    int info = front.pop();
+    if (front.top == nullptr){
+      while (back.top != nullptr){
+        front.push(back.pop());
+      }
+    }
+    return info;
+    }
+};
+
+
 
 int main (){
   stack myStack;
@@ -135,6 +171,17 @@ int main (){
   }
   cout<<stackSet.popAt(1)<<endl;
   stackSet.printStack();
+
+
+  //myQueue testing, working properly
+  myQueue test1;
+  test1.append(2);
+  test1.append(3);
+  test1.append(4);
+  cout<<test1.pop()<<endl;
+  test1.append(5);
+  cout<<test1.pop()<<endl;
+  cout<<test1.pop()<<endl;
 
 
 }
