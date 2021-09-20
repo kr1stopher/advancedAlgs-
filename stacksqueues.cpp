@@ -68,13 +68,14 @@ public:
       stacks.push_back(newStack);
       stacked = 0;
     }
+    ++stacked;
     stacks.back().push(item);
   }
 
   int pop(){
     int dataOut = stacks.back().pop();
     stacked--;
-    if (stacked ==0 and stacks.size()!=0){
+    if (stacks.back().top == nullptr && stacks.size()!=0){
       stacks.pop_back();
       stacked = 10;
     }
@@ -82,13 +83,20 @@ public:
   }
 
   void printStack(){
+    int i =  stacks.size();
     while (stacks.size() != 0){
+      cout<<"This is stack "<<i<<endl;
       stacks.back().printStack();
       stacks.pop_back();
+      --i;
       stacked = 10;
     }
     stacked =0;
     }
+  int  popAt(int i){
+    cout<<stacks.size()<<endl;
+    return stacks[i].pop();
+  }
 };
 
 //turns an array into a stack of nodes, given the array and # of elements in the array
@@ -125,7 +133,8 @@ int main (){
   for (int i =0; i<sizeof(b)/sizeof(int); i++){
     stackSet.push(b[i]);
   }
-  //stackSet.printStack();
+  cout<<stackSet.popAt(1)<<endl;
+  stackSet.printStack();
 
 
 }
