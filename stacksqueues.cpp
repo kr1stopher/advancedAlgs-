@@ -145,6 +145,28 @@ public:
     }
 };
 
+//sort a stack using only one additional stack and a temp variable
+stack stackSort (stack myStack){
+  stack sorted;
+  sorted.push(myStack.pop());
+  int temp;
+  while (myStack.top!=nullptr){
+    if(myStack.top->data > sorted.top->data){
+        sorted.push(myStack.pop());
+    }else{
+      temp = myStack.pop();
+      while (sorted.top != nullptr && sorted.top->data > temp){
+        myStack.push(sorted.pop());
+      }
+      sorted.push(temp);
+      while(myStack.top!= nullptr and myStack.top->data > sorted.top->data){
+        sorted.push(myStack.pop());
+      }
+    }
+  }
+  return sorted;
+};
+
 
 
 int main (){
@@ -182,6 +204,10 @@ int main (){
   test1.append(5);
   cout<<test1.pop()<<endl;
   cout<<test1.pop()<<endl;
+
+//testing stackSort, working properly
+  stack myStack3 = arrayStack(a,6);
+  stackSort(myStack3).printStack();
 
 
 }
