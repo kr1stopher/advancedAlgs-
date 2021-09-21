@@ -19,6 +19,31 @@ public:
   }
 };
 
+//implement 3 stacks using only one array
+class threeStacksOneArray{
+public:
+  int arr[30]; //array of size 30, each stack will have up to nodes
+  int count[3] = {0,0,0}; //counts the number of items currently in each stack
+
+  bool push (int data, int stackIndex){
+    if (count[stackIndex]==10){
+      return false; //that stack is full and cannot be added to
+    }
+    arr[stackIndex*10 + count[stackIndex]] = data; //add data to the end of the appropriate stacks
+    count[stackIndex]++;
+    return true; //item successfully added
+  }
+
+  int pop (int stackIndex){
+    if (count[stackIndex]==0){
+      cerr<<"attempted to pop an empty stack"<<endl;
+      //break; //that stack is full and cannot be added to
+    }
+    count[stackIndex]--;
+    return arr[stackIndex*10 + count[stackIndex]+1];
+  }
+};
+
 class stack {
 public:
   node* top = nullptr;
@@ -167,6 +192,7 @@ stack stackSort (stack myStack){
   return sorted;
 };
 
+//create data strucutre for a shelter with a first in first out policy, where adoptive parents can chose either the animal that has been their longest, or the animal breed of thier choice  that
 
 
 int main (){
@@ -210,4 +236,20 @@ int main (){
   stackSort(myStack3).printStack();
 
 
+//testing threeStacksOneArray, functioning properly 
+threeStacksOneArray test3;
+int i = 0;
+while (i<10){
+  test3.push(i, 0);
+  test3.push(10-i, 1);
+  test3.push(i*10, 2);
+  ++i;
+}
+cout<<"Poping off stack 0: "<<test3.pop(0)<<endl;
+cout<<"Poping off stack 0: "<<test3.pop(0)<<endl;
+cout<<"Poping off stack 1: "<<test3.pop(1)<<endl;
+
+cout<<"Poping off stack 1: "<<test3.pop(1)<<endl;
+cout<<"Poping off stack 2: "<<test3.pop(2)<<endl;
+cout<<"Poping off stack 2: "<<test3.pop(2)<<endl;
 }
