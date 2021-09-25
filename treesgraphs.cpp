@@ -3,6 +3,7 @@
 #include <sstream>
 #include <cmath>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -79,6 +80,7 @@ public:
 
 //class for graph implementation (directed)
 class graph{
+public:
   node* source;
   node* sink; //may or may not be a sink depending on the graph
 
@@ -86,11 +88,12 @@ class graph{
     source = new node(info);
   }
 
-  void insert (int info, node* parent1, node* parent2 = nullptr, node* parent3 = nullptr){
+  node* insert (int info, node* parent1, node* parent2 = nullptr, node* parent3 = nullptr){
     node* child = new node(info);
     parent1->children.push_back(child);
     if (parent2 != nullptr)  parent2->children.push_back(child);
     if (parent3 != nullptr) parent3->children.push_back(child);
+    return child;
   }
 
   void addPath (node*parent, node* child){
@@ -142,21 +145,18 @@ bool isPath (node* start, node* end){
   vector<node*> closed;
 
   while (open.size()!= 0){
-    current = open[0];
+    node* current = open[0];
     if (current == end) return true; //path has been found
-    kids = current->children.size()-1;
-    while (kid>=0){ //check children of current node, add to open if not currently in open or closed 
-      if (find(open.begin(), open.end(), kid)==open.end() && find(closed.begin(), closed.end(), kid) == closed.end()){
-        open.push_back(kid);
+    int kid = current->children.size()-1;
+    while (kid>=0){ //check children of current node, add to open if not currently in open or closed
+      node* child = current->children[kid];
+      if (find(open.begin(), open.end(), child)==open.end() && find(closed.begin(), closed.end(), child) == closed.end()){
+        open.push_back(current->children[kid]);
       }
-    open.erase(open.begin());
-    closed.push_back(current);
-
+    kid--;
     }
-    //add children of start to open if not there already
-    //move open start to closed
-    //
-
+    open.erase(open.begin()); //remove current from open
+    closed.push_back(current); //add current to closed
   }
 
 
@@ -179,6 +179,17 @@ int main(){
   myTree.insert(5);
   //myTree.insert()
   cout<<isBalanced(myTree.top)<<endl;
+
+  //testing graph and is path, working properly 
+  graph myGraph(1);
+  myGraph.insert(2, myGraph.source);
+  node* testNode = myGraph.insert(3, myGraph.source);
+  myGraph.insert(4, myGraph.source->children[0]);
+  node* end = myGraph.insert(5, myGraph.source->children[0]->children[0]);
+  if (isPath(myGraph.source, end)) cout<<"there is a path from source to end"<<endl;
+  if (!isPath(testNode, end)) cout<<"there is not a path from (3) to (5)"<<endl;
+
+
 
 
 
