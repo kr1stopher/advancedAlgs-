@@ -164,7 +164,12 @@ bool isPath (node* start, node* end){
   return false;
 }
 
-
+//create a binary search tree with minimum height given a sorted (increasing order) array w/unique integer elements
+binarySearchTree buildTree (int* arr, int length){
+  //start from middle element, and add moving outward
+  int middle = floor(length/2);
+  binarySearchTree myTree();
+}
 
 
 
@@ -180,7 +185,7 @@ int main(){
   //myTree.insert()
   cout<<isBalanced(myTree.top)<<endl;
 
-  //testing graph and is path, working properly 
+  //testing graph and is path, working properly
   graph myGraph(1);
   myGraph.insert(2, myGraph.source);
   node* testNode = myGraph.insert(3, myGraph.source);
