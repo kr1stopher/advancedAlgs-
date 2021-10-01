@@ -192,6 +192,24 @@ binarySearchTree buildTree (int* arr, int length){
   return myTree;
 }
 
+//returns the depth of the tree
+int treeDepth(node* top){
+
+
+  //recursive, returns +1 of the subtrees below it
+  if (top->right == nullptr && top->left == nullptr){
+    return 1;
+  }else if(top->right == nullptr && top->left !=nullptr){
+    return treeDepth(top->left)+1;
+  }else if(top->left == nullptr && top->right !=nullptr){
+    return treeDepth(top->right)+1;
+  }else if(top->right != nullptr && top->left != nullptr){
+    return (treeDepth(top->right)<treeDepth(top->left)) ? treeDepth(top->left) +1 : treeDepth(top->right) + 1;
+  }
+
+  return 0; //errror 
+
+}
 
 
 int main(){
@@ -218,6 +236,7 @@ int main(){
   //testing builtTree
   int arr1[] = {0,1,2,3,4,5,6};
   binarySearchTree minTree = buildTree(arr1, sizeof(arr1)/sizeof(int));
+  cout<<"the depth of the tree is "<<treeDepth(minTree.top)<<endl;
 
 
 
