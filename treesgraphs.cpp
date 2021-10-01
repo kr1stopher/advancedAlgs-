@@ -168,7 +168,28 @@ bool isPath (node* start, node* end){
 binarySearchTree buildTree (int* arr, int length){
   //start from middle element, and add moving outward
   int middle = floor(length/2);
-  binarySearchTree myTree();
+
+  //move pointer to center of array
+  int center = floor(length/2);
+  while (center>0){
+    arr++, center--;
+  }
+  int* arr1 = arr;
+  binarySearchTree myTree(*arr);
+
+
+  int i = 0;
+  while (i<(length/2)-(length%2)){
+    arr1--, arr++; i++;
+    myTree.insert(*arr1);
+    myTree.insert(*arr);
+  }
+  if (length%2 == 1){ //if the length of the array was even you will have one additional value on the right side of the array to add
+    arr++;
+    myTree.insert(*arr);
+  }
+
+  return myTree;
 }
 
 
@@ -194,7 +215,9 @@ int main(){
   if (isPath(myGraph.source, end)) cout<<"there is a path from source to end"<<endl;
   if (!isPath(testNode, end)) cout<<"there is not a path from (3) to (5)"<<endl;
 
-
+  //testing builtTree
+  int arr1[] = {0,1,2,3,4,5,6};
+  binarySearchTree minTree = buildTree(arr1, sizeof(arr1)/sizeof(int));
 
 
 
