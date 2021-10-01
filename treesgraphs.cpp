@@ -43,6 +43,9 @@ public:
   binarySearchTree(int info){
     top = new node(info);
   }
+  binarySearchTree(){
+
+  }
 
 
   void insert(int info){
@@ -71,9 +74,12 @@ public:
     ;
   }
 
-  void print(int level = 0){
-    cout<<this->top->data<<endl;
-
+  void print(node* root = nullptr, int spacing = 0){
+    char char1= ' ';
+    if (root == nullptr) root = this->top;
+    if (root->left!=nullptr) print(root->left, spacing+1);
+    cout<<string(spacing*3, char1)<<root->data<<endl;
+    if (root->right!=nullptr) print(root->right, spacing+1);
 
   }
 };
@@ -192,6 +198,34 @@ binarySearchTree buildTree (int* arr, int length){
   return myTree;
 }
 
+//updated build tree alg
+binarySearchTree buildTree1 (int* arr, int length, binarySearchTree* myTree){
+  //recursively add to tree
+
+  int* center = arr;
+  int i  = 0;
+  while (i<floor(length/2)){
+    center++,i++;
+  }
+
+
+  if (length == 1){
+    myTree->insert(*center);
+  }else if(length == 2){
+    myTree->insert(*center);
+    myTree->insert(*(++center));
+  }else {
+    myTree->insert(*center);
+    buildTree1(arr, (length/2 -1), myTree); //calling left array
+    buildTree1(++center, length/2-1, myTree);
+    //insert middle element
+    //call build tree with new left array and new right array
+
+  }
+  return *myTree;
+}
+
+
 //returns the depth of the tree
 int treeDepth(node* top){
 
@@ -207,7 +241,7 @@ int treeDepth(node* top){
     return (treeDepth(top->right)<treeDepth(top->left)) ? treeDepth(top->left) +1 : treeDepth(top->right) + 1;
   }
 
-  return 0; //errror 
+  return 0; //errror
 
 }
 
@@ -236,7 +270,22 @@ int main(){
   //testing builtTree
   int arr1[] = {0,1,2,3,4,5,6};
   binarySearchTree minTree = buildTree(arr1, sizeof(arr1)/sizeof(int));
+  binarySearchTree *minTree2 =  new binarySearchTree;
+  binarySearchTree minTree3 = buildTree1(arr1, sizeof(arr1)/sizeof(int), minTree2);
   cout<<"the depth of the tree is "<<treeDepth(minTree.top)<<endl;
+  cout<<"the depth of the tree is "<<treeDepth(minTree3.top)<<endl;
+
+
+  //testing the print function
+  binarySearchTree printTree(7);
+  printTree.insert(5);
+  printTree.insert(9);
+  printTree.insert(4);
+  printTree.insert(6);
+  printTree.insert(8);
+  printTree.insert(10);
+
+  printTree.print();
 
 
 
