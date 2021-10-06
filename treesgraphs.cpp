@@ -28,6 +28,7 @@ public:
   int data;
   node* left; //pointer to left child of node
   node* right; //pointer to the right child of the node
+  node* next; //for linkedLists
   vector<node*> children;//for use in graphs
 
   node (int info){
@@ -77,9 +78,10 @@ public:
   void print(node* root = nullptr, int spacing = 0){
     char char1= ' ';
     if (root == nullptr) root = this->top;
-    if (root->left!=nullptr) print(root->left, spacing+1);
-    cout<<string(spacing*3, char1)<<root->data<<endl;
     if (root->right!=nullptr) print(root->right, spacing+1);
+    cout<<string(spacing*3, char1)<<root->data<<endl;
+    if (root->left!=nullptr) print(root->left, spacing+1);
+
 
   }
 };
@@ -201,7 +203,7 @@ binarySearchTree buildTree (int* arr, int length){
 //updated build tree alg
 binarySearchTree buildTree1 (int* arr, int length, binarySearchTree* myTree){
   //recursively add to tree
-
+  cout<<length<<" is the length"<<endl;
   int* center = arr;
   int i  = 0;
   while (i<floor(length/2)){
@@ -211,15 +213,15 @@ binarySearchTree buildTree1 (int* arr, int length, binarySearchTree* myTree){
 
   if (length == 1){
     myTree->insert(*center);
+    return *myTree;
   }else if(length == 2){
     myTree->insert(*center);
     myTree->insert(*(++center));
+    return *myTree;
   }else {
     myTree->insert(*center);
-    buildTree1(arr, (length/2 -1), myTree); //calling left array
-    buildTree1(++center, length/2-1, myTree);
-    //insert middle element
-    //call build tree with new left array and new right array
+    buildTree1(arr, floor((length-1)/2), myTree); //calling left array
+    buildTree1(++center, ceil((length-1)/2), myTree);//calling right array
 
   }
   return *myTree;
@@ -246,8 +248,44 @@ int treeDepth(node* top){
 }
 
 
-int main(){
+//given a binary tree, create a linked list containing all nodes in each depth of the tree
+vector<node*> linkedTree(binarySearchTree myTree){
+  vector<node*>  linkedLists;
+  vector<node*> open; //open nodes to explore in breadthFirstSearch
+  node* start = myTree.top;
+  open.push_back(myTree.top); //add starting node to open
 
+  linkedLists.push_back(new node(myTree.top->data));
+
+   while (open.size()!=0){
+     int i = open.size(); //iterator for determining children of this level
+     int j = 0; //iterator for level on the tree
+     while (i>0){
+       if (open[0]->left != nullptr) open.push_back(open[0]->left); //add right child to open
+       if (open[0]->right != nullptr) open.push_back(open[0]->right); //add right child to open
+       //add open[0] to its proper spot in linked list
+       if (linkedLists.size()==j) {
+         linkedLists.push_back(new node(open[0]->data));
+       }else if (linkedLists.size()== j+1) {
+         node* ptr = linkedLists[j];
+         while (ptr!=nullptr){
+           ptr=ptr->next;
+         }
+         ptr = new node(open[0]->data);
+       }
+       open.erase(open.begin());
+       j++;
+       --i;
+     }
+   }
+
+
+  return linkedLists;
+}
+
+
+int main(){
+  /*
   //check isBalanced, functioning properly
   binarySearchTree myTree(5);
   myTree.insert(4);
@@ -269,13 +307,20 @@ int main(){
 
   //testing builtTree
   int arr1[] = {0,1,2,3,4,5,6};
+  int arr2[] = {0,1,2,3,4,5,6};
+  /*
   binarySearchTree minTree = buildTree(arr1, sizeof(arr1)/sizeof(int));
-  binarySearchTree *minTree2 =  new binarySearchTree;
-  binarySearchTree minTree3 = buildTree1(arr1, sizeof(arr1)/sizeof(int), minTree2);
   cout<<"the depth of the tree is "<<treeDepth(minTree.top)<<endl;
-  cout<<"the depth of the tree is "<<treeDepth(minTree3.top)<<endl;
+  cout<<endl<<endl<<endl;
+  minTree.print();
 
+  binarySearchTree *minTree2 =  new binarySearchTree(1);
+  binarySearchTree minTree3 = buildTree1(arr2, sizeof(arr2)/sizeof(int), minTree2);
+  cout<<"below is mintree 3"<<endl;
+  minTree3.print();
+  cout<<endl<<endl<<endl<<endl;
 
+  */
   //testing the print function
   binarySearchTree printTree(7);
   printTree.insert(5);
@@ -286,6 +331,18 @@ int main(){
   printTree.insert(10);
 
   printTree.print();
+
+  vector<node*> myLists = linkedTree(printTree);
+  int i = 0;
+  while (i<myLists.size()){
+    node* ptr = myLists[i];
+    while (ptr!=nullptr){
+      cout<<ptr->data<<"    ";
+      ptr = ptr->next;
+    }
+    cout<<endl;
+    i++;
+  }
 
 
 
