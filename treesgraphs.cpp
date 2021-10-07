@@ -255,26 +255,31 @@ vector<node*> linkedTree(binarySearchTree myTree){
   node* start = myTree.top;
   open.push_back(myTree.top); //add starting node to open
 
-  linkedLists.push_back(new node(myTree.top->data));
-
+  //linkedLists.push_back(new node(myTree.top->data));
+  int j = -1; //iterator for tree level
    while (open.size()!=0){
      int i = open.size(); //iterator for determining children of this level
-     int j = 0; //iterator for level on the tree
+     j++;
      while (i>0){
        if (open[0]->left != nullptr) open.push_back(open[0]->left); //add right child to open
        if (open[0]->right != nullptr) open.push_back(open[0]->right); //add right child to open
        //add open[0] to its proper spot in linked list
+       cout<<i<<", "<<j<<", "<<linkedLists.size()<<" i,j, linkedLists.size()"<<endl;
+       cout<<open.size()<<" open.size()"<<endl;
        if (linkedLists.size()==j) {
+         cout<<"A new level is being created "<<open[0]->data<<endl;
          linkedLists.push_back(new node(open[0]->data));
-       }else if (linkedLists.size()== j+1) {
+         //j++;
+       }else {
          node* ptr = linkedLists[j];
          while (ptr!=nullptr){
            ptr=ptr->next;
          }
          ptr = new node(open[0]->data);
+         cout<<"adding "<<open[0]->data<<endl;
        }
        open.erase(open.begin());
-       j++;
+       //++j;
        --i;
      }
    }
@@ -340,10 +345,9 @@ int main(){
       cout<<ptr->data<<"    ";
       ptr = ptr->next;
     }
-    cout<<endl;
+    cout<<endl<<"next list"<<endl;
     i++;
   }
-
 
 
   return 0;
