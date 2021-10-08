@@ -264,19 +264,15 @@ vector<node*> linkedTree(binarySearchTree myTree){
        if (open[0]->left != nullptr) open.push_back(open[0]->left); //add right child to open
        if (open[0]->right != nullptr) open.push_back(open[0]->right); //add right child to open
        //add open[0] to its proper spot in linked list
-       cout<<i<<", "<<j<<", "<<linkedLists.size()<<" i,j, linkedLists.size()"<<endl;
-       cout<<open.size()<<" open.size()"<<endl;
        if (linkedLists.size()==j) {
-         cout<<"A new level is being created "<<open[0]->data<<endl;
          linkedLists.push_back(new node(open[0]->data));
          //j++;
        }else {
-         node* ptr = linkedLists[j];
-         while (ptr!=nullptr){
+         node* ptr = linkedLists[linkedLists.size()-1];
+         while (ptr->next != nullptr){
            ptr=ptr->next;
          }
-         ptr = new node(open[0]->data);
-         cout<<"adding "<<open[0]->data<<endl;
+         ptr->next = new node(open[0]->data);
        }
        open.erase(open.begin());
        //++j;
@@ -290,7 +286,7 @@ vector<node*> linkedTree(binarySearchTree myTree){
 
 
 int main(){
-  /*
+
   //check isBalanced, functioning properly
   binarySearchTree myTree(5);
   myTree.insert(4);
@@ -337,12 +333,15 @@ int main(){
 
   printTree.print();
 
+
+//Testing linkedTree function 
   vector<node*> myLists = linkedTree(printTree);
   int i = 0;
   while (i<myLists.size()){
     node* ptr = myLists[i];
     while (ptr!=nullptr){
-      cout<<ptr->data<<"    ";
+      cout<<ptr->data;
+      if (ptr->next != nullptr) cout<<"  |  ";
       ptr = ptr->next;
     }
     cout<<endl<<"next list"<<endl;
