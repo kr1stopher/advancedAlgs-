@@ -284,6 +284,27 @@ vector<node*> linkedTree(binarySearchTree myTree){
   return linkedLists;
 }
 
+bool isSearch (node* top){//check to see if a tree or subtree is a binary search tree given a starting node
+  bool left = true;
+  bool right = true;
+  if (top->right == nullptr && top->left == nullptr) return true;
+
+  //right side
+  if (top->right!=nullptr){
+    if (top->right->data<=top->data) return false;
+    right = isSearch(top->right);
+  }
+
+  //left side
+  if (top->left!=nullptr){
+    if (top->left->data>top->data) return false;
+    right = isSearch(top->left);
+  }
+
+  return left && right;
+
+}
+
 
 int main(){
 
@@ -334,7 +355,7 @@ int main(){
   printTree.print();
 
 
-//Testing linkedTree function 
+//Testing linkedTree function
   vector<node*> myLists = linkedTree(printTree);
   int i = 0;
   while (i<myLists.size()){
@@ -348,6 +369,7 @@ int main(){
     i++;
   }
 
+  cout<<isSearch(printTree.top)<<endl;
 
   return 0;
 }
