@@ -284,6 +284,7 @@ vector<node*> linkedTree(binarySearchTree myTree){
   return linkedLists;
 }
 
+//determine if a binary tree is a binary search tree
 bool isSearch (node* top){//check to see if a tree or subtree is a binary search tree given a starting node
   bool left = true;
   bool right = true;
@@ -305,6 +306,71 @@ bool isSearch (node* top){//check to see if a tree or subtree is a binary search
 
 }
 
+
+//find the common ancestor  of two nodes in a binary tree
+node* grandpa(node* top, node* node1, node* node2){
+  //find the  nodes
+}
+
+//determine if tree2 is a subtree of tree1, given pointers to the top nodes of each
+bool isSubtree (node* tree1, node* tree2){
+
+
+  //base case:
+  if (tree1->data == tree2->data && tree1->right == nullptr && tree2->right == nullptr && tree1->left == nullptr && tree2->left == nullptr){
+    return true;
+  }
+  if (tree1->left != nullptr){
+    isSubtree(tree1->left, tree2);
+  }
+  vector<node*> open;
+  open.push_back(tree1);
+
+
+
+
+
+
+
+
+  while (open.size() !=  0){
+    node* current = open[0];
+    open.erase(open.begin());
+    if (current->data == tree2->data){
+      vector<node*> openT1;
+      vector<node*>openT2;
+      openT1.push_back(current);
+      openT2.push_back(tree2);
+      bool isSubtree = true;
+
+      while (isSubtree = true && openT1.size()!=0){ //breadthFirstSearch until a mismatch is foudn or all nodes have been checked
+        if (openT1[0]==nullptr or openT2[0]==nullptr){//if one is a nullptr but not the other there is no match
+          if (openT1[0]!=openT2[0]) isSubTree = false
+        }else if (openT1[0]->data != openT2[0]->data){ //if data doesnt match there is no subtree
+          isSubTree = false;
+        }else if (openT1->data == openT2->data){ //add children to open to compare
+          openT1.push_back(openT1[0]->right];
+          openT1.push_back(openT1[0]->left];
+          openT2.push_back(openT2[0]->right];
+          openT2.push_back(openT2[0]->left];
+          openT1.erase(openT1.begin());
+          openT2.erase(openT1.begin());
+        }
+         }
+
+
+      //check to see if rest is subtree
+    }
+
+    if (current->left != nullptr) open.push_back(current->left);
+    if (current->right != nullptr) open.push_back(current->right);
+
+  }
+
+
+
+
+}
 
 int main(){
 
