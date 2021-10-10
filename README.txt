@@ -22,4 +22,5 @@ treesgraphs.cpp
 	(6) buildTree1 //build binary search tree of min height given an array of ordered int values 
 	(7)treeDepth //returns depth of a tree
 	(8) linkedTree (binaryTree myTree) // returns a vector of linked lists, one list for each level in the tree containing all of that levels' nodes 
-	(8) isSearch //check to see if a given binary tree is a binary search tree 
+	(8) isSearch //check to see if a given binary tree is a binary search tree
+	(9) isSubtree (node* top1, node* top2) //checks if the tree starting at top2 is  a subtree of the tree starting at top1
