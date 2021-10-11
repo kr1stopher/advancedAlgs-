@@ -309,8 +309,40 @@ bool isSearch (node* top){//check to see if a tree or subtree is a binary search
 
 //find the common ancestor  of two nodes in a binary tree
 node* grandpa(node* top, node* node1, node* node2){
-  //find the  nodes
-  return new node(7);
+  //breadthFirstSearch, store paths, check to see which nodes are the same along the path
+  vector<node*> open;
+  vector<vector<string>> path, path1, path2;
+  bool found1 = false;
+  bool found2 = false;
+  path.push_back({"start"});
+
+  open.push_back(top);
+
+  while (open.size()!= 0 && (found1 == false || found2 == false)){ //search through the tree until tree empty or both nodes found
+    node* current = open[0];
+    open.erase(open.begin());
+    if (current == node1); //do some shit
+    if (current == node2); //do some other shit
+
+    if (current->left != nullptr) { //add left child and route to get there to the vector [queue]
+      open.push_back(current->left);
+      path.push_back(path[0]);
+      path[path.size()-1].push_back("left");
+    }
+
+    if (current->right!= nullptr) { //add right child and route to get there to the vector [queue]
+      open.push_back(current->right);
+      path.push_back(path[0]);
+      path[path.size()-1].push_back("right");
+    }
+    path.erase(path.begin());
+  }
+
+  if (found1 == true && found2 == true){
+    ;
+  }
+    //follow the paths until they no longer match, save last matching
+  return nullptr;
 }
 
 //determine if tree2 is a subtree of tree1, given pointers to the top nodes of each
@@ -423,7 +455,7 @@ int main(){
   }
   cout<<isSearch(printTree.top)<<endl;
 
-  //testing isSubtree function, tested and functioning 
+  //testing isSubtree function, tested and functioning
   binarySearchTree myTree12(5);
   myTree12.insert(6);
   myTree12.insert(4);
@@ -434,6 +466,11 @@ int main(){
   cout<<isSubtree(printTree.top, myTree12.top)<< " is/is not a subtree "<<endl;
 
 
-
+  vector<vector<string>> test1;
+  test1.push_back({"start"});
+  test1.push_back({test1[0][0], "left"});
+  test1[1].push_back("right");
+  cout<<test1[1][0]<<endl;
+  cout<<test1[1][2]<<"   |     "<<test1[1][2]<<endl;
   return 0;
 }
