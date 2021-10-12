@@ -49,7 +49,7 @@ public:
   }
 
 
-  void insert(int info){
+  node* insert(int info){
     node* p1 = top;
     node* p2 = p1; //will be used for the previous node
     string direction;
@@ -69,6 +69,7 @@ public:
     }else if (direction == "left"){
       p2->left = p1;
     }
+    return p1;
   }
 
   void remove(int info){
@@ -311,7 +312,8 @@ bool isSearch (node* top){//check to see if a tree or subtree is a binary search
 node* grandpa(node* top, node* node1, node* node2){
   //breadthFirstSearch, store paths, check to see which nodes are the same along the path
   vector<node*> open;
-  vector<vector<string>> path, path1, path2;
+  vector<vector<string>> path;
+  vector<string> path1, path2;
   bool found1 = false;
   bool found2 = false;
   path.push_back({"start"});
@@ -321,8 +323,16 @@ node* grandpa(node* top, node* node1, node* node2){
   while (open.size()!= 0 && (found1 == false || found2 == false)){ //search through the tree until tree empty or both nodes found
     node* current = open[0];
     open.erase(open.begin());
-    if (current == node1); //do some shit
-    if (current == node2); //do some other shit
+    if (current == node1){
+      path1 = path[0];
+      cout<<current->data<<" this node has been found"<<endl;
+      found1 = true;
+    }
+    if (current == node2){
+      path2 = path[0];
+      cout<<current->data<<" this node has been found"<<endl;
+      found2 = true;
+    }
 
     if (current->left != nullptr) { //add left child and route to get there to the vector [queue]
       open.push_back(current->left);
@@ -339,7 +349,25 @@ node* grandpa(node* top, node* node1, node* node2){
   }
 
   if (found1 == true && found2 == true){
-    ;
+    int i = 0;
+    node* ptr = top;
+    for (int j = 0; j<path1.size()-1;j++){
+      cout<<path1[j]<<"  |   ";
+    }
+    cout<<endl;
+    for (int k = 0; k<path2.size()-1;k++){
+      cout<<path2[k]<<"  |   ";
+    }
+    cout<<endl;
+    while (i<path1.size() && i<path1.size() && path1[i]==path2[i]){
+      if (path1[i] == "left"){
+        ptr = ptr->left;
+      }else if (path1[i] == "right"){
+        ptr = ptr->right;
+      }
+      i++;
+    }
+    return ptr;
   }
     //follow the paths until they no longer match, save last matching
   return nullptr;
@@ -432,9 +460,9 @@ int main(){
   binarySearchTree printTree(7);
   printTree.insert(5);
   printTree.insert(9);
-  printTree.insert(4);
-  printTree.insert(6);
-  printTree.insert(8);
+  node* grandchild = printTree.insert(4);
+  node* grandchild6 = printTree.insert(6);
+  node* grandchild1 = printTree.insert(8);
   printTree.insert(10);
 
   printTree.print();
@@ -466,11 +494,11 @@ int main(){
   cout<<isSubtree(printTree.top, myTree12.top)<< " is/is not a subtree "<<endl;
 
 
-  vector<vector<string>> test1;
-  test1.push_back({"start"});
-  test1.push_back({test1[0][0], "left"});
-  test1[1].push_back("right");
-  cout<<test1[1][0]<<endl;
-  cout<<test1[1][2]<<"   |     "<<test1[1][2]<<endl;
+  //testing grandpa alg, working properly 
+  node* grandpa1 = grandpa(printTree.top,grandchild, grandchild6);
+  cout<<grandpa1->data<<" is the grandpa of 4 and 6"<<endl;
+
+
+
   return 0;
 }
