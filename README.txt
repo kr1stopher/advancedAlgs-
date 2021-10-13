@@ -25,3 +25,4 @@ treesgraphs.cpp
 	(8) isSearch //check to see if a given binary tree is a binary search tree
 	(9) grandpa (node* top, node1, node2) //returns the most recent common ancestor of two given nodes given the top of the tree. 
 	(10) isSubtree (node* top1, node* top2) //checks if the tree starting at top2 is  a subtree of the tree starting at top1
+	(11) printPaths (node* top, int value) //prints the paths down the  tree that equal the value, not neccessarily starting at top

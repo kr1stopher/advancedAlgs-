@@ -455,11 +455,12 @@ void printPaths (node* top, int value){
     for (int j = 0; j<finalPaths[i].size();j++){
       int sum = finalPaths[i][j];
       if (sum == value) cout<<sum<<" is a path"<<endl;
-      for (int k = 0; k<finalPaths[i].size()-j;k++){
-        sum += finalPaths[i][j+k];
+      for (int k = 1; k<finalPaths[i].size()-j;k++){
+        sum = sum + finalPaths[i][j+k];
         if (sum == value){
           for (int z=0; z<=k; z++){
-            cout<<finalPaths[i][j+z]<<"  |  ";
+            cout<<finalPaths[i][j+z];
+            if (z!=k) cout<<"  |  ";
           }
           cout<<" is a path"<<endl;
         }
@@ -547,8 +548,11 @@ int main(){
   node* grandpa1 = grandpa(printTree.top,grandchild, grandchild6);
   cout<<grandpa1->data<<" is the grandpa of 4 and 6"<<endl;
   cout<<endl<<endl;
-  //testing printPaths
+
+
+  //testing printPaths, working properly. Does print duplicates though
   printPaths(printTree.top, 16);
+  printPaths(printTree.top,11);
 
 
   return 0;
