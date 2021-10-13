@@ -419,6 +419,55 @@ bool isSubtree (node* tree1, node* tree2){
   return false;
 }
 
+//given a tree and a value, print all paths where the sum of the  nodes values = the given value (paths do not necessarily have to start at the root)
+void printPaths (node* top, int value){
+  //breadth first search
+  vector<node*> open;
+  vector<vector<int>> paths;
+  vector<vector<int>> finalPaths;
+  //f (top->data == value) cout<<top->data<<" is a path with value "<<value<<endl;
+
+  open.push_back(top);
+  paths.push_back({top->data}); //the first element of the vector will store the sum of the path in that vector
+
+  while (open.size()!=0){
+    node* current = open[0];
+    open.erase(open.begin());
+
+    if (current->left!= nullptr) {
+      open.push_back(current->left);
+      paths.push_back(paths[0]);
+      paths[paths.size()-1].push_back(current->left->data);
+    }
+    if (current->right!= nullptr) {
+      open.push_back(current->right);
+      paths.push_back(paths[0]);
+      paths[paths.size()-1].push_back(current->right->data);
+    }
+    if (current->right == nullptr && current->left == nullptr){ //node is a leaf, and should be stored to final paths as the leaf paths contain all subpaths
+      finalPaths.push_back(paths[0]);
+    }
+    paths.erase(paths.begin());
+  }//end while loop
+
+  //scroll through the final paths and see which subpaths are equal to the requested value
+  for (int i = 0; i<finalPaths.size(); i++){
+    for (int j = 0; j<finalPaths[i].size();j++){
+      int sum = finalPaths[i][j];
+      if (sum == value) cout<<sum<<" is a path"<<endl;
+      for (int k = 0; k<finalPaths[i].size()-j;k++){
+        sum += finalPaths[i][j+k];
+        if (sum == value){
+          for (int z=0; z<=k; z++){
+            cout<<finalPaths[i][j+z]<<"  |  ";
+          }
+          cout<<" is a path"<<endl;
+        }
+      }
+    }
+  }
+}
+
 int main(){
 
   //check isBalanced, functioning properly
@@ -494,10 +543,12 @@ int main(){
   cout<<isSubtree(printTree.top, myTree12.top)<< " is/is not a subtree "<<endl;
 
 
-  //testing grandpa alg, working properly 
+  //testing grandpa alg, working properly
   node* grandpa1 = grandpa(printTree.top,grandchild, grandchild6);
   cout<<grandpa1->data<<" is the grandpa of 4 and 6"<<endl;
-
+  cout<<endl<<endl;
+  //testing printPaths
+  printPaths(printTree.top, 16);
 
 
   return 0;
